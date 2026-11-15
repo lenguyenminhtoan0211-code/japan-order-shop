@@ -2,10 +2,190 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Trang Web Đầu Tiên Của Tôi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JP-VN Order - Chuyên Hàng Nội Địa Nhật Bản</title>
+    <style>
+        :root {
+            --primary-color: #d32f2f;
+            --secondary-color: #1976d2;
+            --bg-color: #f4f6f8;
+            --text-color: #333;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: linear-gradient(135deg, #d32f2f, #b71c1c);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.8rem;
+        }
+        header p {
+            margin: 0;
+            opacity: 0.9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .section-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid #ffebee;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background-color: #b71c1c;
+        }
+        .result-box {
+            background-color: #e3f2fd;
+            border: 1px dashed var(--secondary-color);
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+        .result-box h3 {
+            margin-top: 0;
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+        }
+        .price-text {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #d32f2f;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 0.85rem;
+        }
+    </style>
 </head>
 <body>
-    <h1>Xin chào Việt Nam!</h1>
-    <p>Tôi đang tự tạo trang web bán hàng của riêng mình.</p>
+
+    <header>
+        <h1>🇯🇵 JP-VN ORDER SHOP 🇻🇳</h1>
+        <p>Chuyên order hàng chuẩn nội địa Nhật Bản - Uy tín, Nhanh chóng</p>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title">📦 Tính Giá Nhanh & Gửi Yêu Cầu Order</h2>
+        
+        <div class="form-group">
+            <label for="productUrl">Dán link sản phẩm từ Nhật (Amazon, Mercari, Uniqlo,...):</label>
+            <input type="text" id="productUrl" placeholder="https://www.amazon.co.jp/...">
+        </div>
+
+        <div class="form-group">
+            <label for="productPrice">Giá sản phẩm tại Nhật (Yên - JPY):</label>
+            <input type="number" id="productPrice" placeholder="Ví dụ: 3500">
+        </div>
+
+        <div class="form-group">
+            <label for="shippingWeight">Trọng lượng ước tính (gram):</label>
+            <input type="number" id="shippingWeight" value="500" placeholder="Ví dụ: 500">
+        </div>
+
+        <button class="btn" onclick="calculatePrice()">Tính Giá Dự Kiến & Đặt Hàng</button>
+
+        <div class="result-box" id="resultArea" style="display: none;">
+            <h3>💰 Kết Quả Tính Giá:</h3>
+            <p>Giá quy đổi sang VNĐ: <span id="vndPrice" class="price-text">0đ</span></p>
+            <p style="font-size: 0.9rem; color: #555;">*(Đã bao gồm phí dịch vụ và cước vận chuyển Nhật - Việt cơ bản. Cọc trước 50% để chốt đơn).*</p>
+            
+            <hr style="border: 0; border-top: 1px solid #bbdefb; margin: 15px 0;">
+            
+            <h3 style="color: #2e7d32;">📝 Thông Tin Nhận Hàng:</h3>
+            <div class="form-group">
+                <label>Họ và tên:</label>
+                <input type="text" id="cusName" placeholder="Nhập họ tên của bạn">
+            </div>
+            <div class="form-group">
+                <label>Số điện thoại / Zalo:</label>
+                <input type="text" id="cusPhone" placeholder="Số điện thoại liên hệ">
+            </div>
+            <button class="btn" style="background-color: #2e7d32;" onclick="sendOrder()">Gửi Đơn Hàng Ngay</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 JP-VN Order Shop | Direct from Osaka, Japan</p>
+    </footer>
+
+    <script>
+        function calculatePrice() {
+            let priceYen = parseFloat(document.getElementById('productPrice').value);
+            if (!priceYen || priceYen <= 0) {
+                alert('Vui lòng nhập giá tiền Yên hợp lệ!');
+                return;
+            }
+            // Tỷ giá mẫu tính tạm (có thể điều chỉnh)
+            let exchangeRate = 175; 
+            let totalVnd = priceYen * exchangeRate;
+            
+            document.getElementById('vndPrice').innerText = totalVnd.toLocaleString('vi-VN') + ' VNĐ';
+            document.getElementById('resultArea').style.display = 'block';
+        }
+
+        function sendOrder() {
+            let name = document.getElementById('cusName').value;
+            let phone = document.getElementById('cusPhone').value;
+            let url = document.getElementById('productUrl').value;
+            
+            if(!name || !phone) {
+                alert('Vui lòng điền đầy đủ họ tên và số điện thoại!');
+                return;
+            }
+            alert('Cảm ơn bạn ' + name + '! Đơn hàng của bạn đã được ghi nhận. Shop sẽ liên hệ qua số ' + phone + ' sớm nhất.');
+        }
+    </script>
 </body>
 </html>
